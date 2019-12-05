@@ -8,7 +8,6 @@ public class BinaryTree implements complex_function{
 		
 	    double value;  // ?
 	    Operation op;
-	    boolean isInner;
 	    function func;
 	    Node left;
 	    Node right;
@@ -25,9 +24,8 @@ public class BinaryTree implements complex_function{
 	        right = null;
 	        left = null;
 	    }
-	    Node(Operation op, boolean isInner, function func){
+	    Node(Operation op, function func){
 	    	this.op = Operation.None;
-	    	this.isInner = false;
 	    	this.func = null;
 	    	left = right = null;
 	    }
@@ -69,7 +67,7 @@ public class BinaryTree implements complex_function{
 	Node root;
 	
 	public BinaryTree() {
-		root = new Node(Operation.None, false, null);
+		root = new Node(Operation.None, null);
 	}
 	public BinaryTree(Node root) {
 		this.root=root;
@@ -81,7 +79,7 @@ public class BinaryTree implements complex_function{
 		
 		Node root = new Node();
 		
-		if(!s.contains(""+',')) {
+		if(!s.contains(",")) {
 			Polynom p = new Polynom(s);
 			root.setFunc(p);
 
@@ -157,8 +155,40 @@ public class BinaryTree implements complex_function{
 	}
 	@Override
 	public double f(double x) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		if(!isLeaf()) {
+			Operation oper = this.getOp();
+			switch(oper) {
+			case Plus:
+				return this.left().f(x)+this.right().f(x);
+			case Times:
+				return this.left().f(x)*this.right().f(x);
+			case Divid:
+				return this.left().f(x)/this.right().f(x);
+			case Min:
+				return Math.min(this.left().f(x), this.right().f(x));
+			case Max:
+				return Math.max(this.left().f(x), this.right().f(x));
+			case Comp:
+				return this.left().f(this.right().f(x));
+			default:
+				return 0;
+
+			}
+		}
+		else {
+			return this.getFunc().f(x);
+		}
+		
+		
+	}
+	
+	
+	private function getFunc() {
+		return this.root.func;
+	}
+	private boolean isLeaf() {
+		return this.getLeft()==null;
 	}
 	@Override
 	public function initFromString(String s) {
@@ -201,19 +231,21 @@ public class BinaryTree implements complex_function{
 		
 	}
 	@Override
-	public function left() {
-		// TODO Auto-generated method stub
-		return null;
+	public function left() {//Nullpointer exception
+		Node n = root.left;
+		BinaryTree bTb = new BinaryTree(n);
+		return bTb;
+		
 	}
 	@Override
-	public function right() {
-		// TODO Auto-generated method stub
-		return null;
+	public function right() {//Nullpointer exception
+		Node n = root.right;
+		BinaryTree bTb = new BinaryTree(n);
+		return bTb;
 	}
 	@Override
 	public Operation getOp() {
-		// TODO Auto-generated method stub
-		return null;
+		return root.op;
 	}
 
 }

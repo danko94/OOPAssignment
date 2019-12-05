@@ -164,7 +164,7 @@ public class ComplexFunction implements complex_function {
 
 	}
 
-	@Override
+	@Override 
 	public function left() {
 		return null;
 				}

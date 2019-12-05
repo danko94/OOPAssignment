@@ -39,21 +39,27 @@ public class main {
 
 		}*/
 		
-		String s = "Min(Plus(Divid(x^2,x^3),Comp(2,3)),3)";
+		String s = "Max(Plus(Divid(x^2,x^3),Comp(2,3)),3)";
+		String s1 = "Plus(x^2,x^3)";
 		BinaryTree bt = new BinaryTree(s);
 		BinaryTree bt1 = new BinaryTree();
-		
+		BinaryTree bt2 = new BinaryTree(s1);
+		function g = bt.left();
+		BinaryTree h = (BinaryTree)g;
+		System.out.println(h.getOp());
 		//bt = (BinaryTree)bt.initFromString(s);
 		//bt.root=bt.insertFunc(s);
 		bt1.root=bt1.insertFunc(s);
 		System.out.println(bt.root.left.right.getOp());
 		//bt.root = bt.newRoot(Operation.Divid);
 		
-		bt.min(bt1);
-
+		bt.plus(bt1);
+	
 		//bt.insertFuncRight(bt1);
 		System.out.println(bt.root.right.getOp());
 		System.out.println(bt.root.getOp());
+		System.out.println(bt2.f(1));
+		System.out.println(bt.f(5));
 
 		
 
