@@ -208,6 +208,15 @@ public class Monom implements function{
 			return true;
 		}
 	}
+	
+	public boolean equals(Object obj) {
+		if(obj instanceof Monom) {
+			return this.equals(obj);
+		}
+		else {
+			throw new RuntimeException("error.");
+		}
+	}
 	/**
 	 * Check whether monom coefficients deviate less than 0.0000001 from each other
 	 * @param m Monom 1
@@ -257,6 +266,11 @@ public class Monom implements function{
 	public function initFromString(String s) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public function copy() {
+		Monom copy = new Monom(this.get_coefficient(), this.get_power());
+		return copy;
 	}
 
 

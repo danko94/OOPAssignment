@@ -6,46 +6,17 @@ public class main {
 
 	public static void main(String[] args) {
 
-		/*StringTokenizer st = new StringTokenizer(s, "(),");
-
-		BinaryTree bt = new BinaryTree();
-		BinaryTree.Node root = bt.root;
-		while (st.hasMoreTokens()) {
-			String token = st.nextToken();
-			Operation op = Operation.Error;
-			String pol = "-x1234567890";
-
-			if(pol.contains(""+(token.charAt(0)))&&root.left==null){
-				root.left.func = new Polynom(token);
-				root.left.op = Operation.None;
-				root.left.parent = root;
-			}
-			else if(pol.contains(""+(token.charAt(0)))) {
-				root.right.func = new Polynom(token);
-				root.right.op = Operation.None;
-				root.right.parent = root;
-			}
-			else {
-				for (Operation c : Operation.values()) {
-					if (c.name().equals(token)) {
-						op = Operation.valueOf(token);
-					}
-				}
-			}
-			root.op = op;
-			if(root.left==null) {
-				root.left = ;
-			}
-
-		}*/
 		
-		String s = "Max(Plus(Divid(x^2,x^3),Comp(2,3)),3)";
-		String s1 = "Plus(x^2,x^3)";
-		BinaryTree bt = new BinaryTree(s);
-		BinaryTree bt1 = new BinaryTree();
-		BinaryTree bt2 = new BinaryTree(s1);
+		String s = "Plus(Max(Divid(x^2,x^3),Comp(2,3)),3)";
+		String s1 = "None(x^2,x^3)";
+		ComplexFunction bt = new ComplexFunction(s);
+		ComplexFunction bt5 = new ComplexFunction(s);
+		System.out.println(bt.equals(bt5));
+		System.out.println(bt.f(100));
+		ComplexFunction bt1 = new ComplexFunction();
+		ComplexFunction bt2 = new ComplexFunction(s1);
 		function g = bt.left();
-		BinaryTree h = (BinaryTree)g;
+		ComplexFunction h = (ComplexFunction)g;
 		System.out.println(h.getOp());
 		//bt = (BinaryTree)bt.initFromString(s);
 		//bt.root=bt.insertFunc(s);
@@ -58,8 +29,19 @@ public class main {
 		//bt.insertFuncRight(bt1);
 		System.out.println(bt.root.right.getOp());
 		System.out.println(bt.root.getOp());
-		System.out.println(bt2.f(1));
-		System.out.println(bt.f(5));
+		//System.out.println(bt2.f(1));
+		//System.out.println(bt.f(5));
+		
+	   // bt.printPreorder(bt5.root);
+		
+	    System.out.println();
+	    System.out.println(bt2);
+	    System.out.println(bt5);
+	    System.out.println(bt1);
+	    System.out.println(bt);
+
+	    
+
 
 		
 

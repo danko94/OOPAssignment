@@ -9,8 +9,8 @@ public interface function extends Serializable{
 	/** 
 	 * return a String representing this complex function
 	 */
-	//public String toString();
+	public String toString();
 	public function initFromString(String s);
-	//public function copy(); // clone
-	//public boolean equals(Object obj);
+	public function copy(); // clone
+	public boolean equals(Object obj);
 }
