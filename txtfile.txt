@@ -1,0 +1,2 @@
+0) java.awt.Color[r=0,g=0,b=255] f(x)= Plus(Max(Divid(1.0x^2,1.0x^3),Comp(2.0,3.0)),3.0)
+1) java.awt.Color[r=0,g=255,b=255] f(x)= None(1.0x^2,1.0x^3)

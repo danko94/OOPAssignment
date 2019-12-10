@@ -3,35 +3,35 @@ package myMath;
 //import myMath.BinaryTree.Node;
 
 public class ComplexFunction implements complex_function{
-	
+
 	public class Node {
-		
-	    double value;  // ?
-	    Operation op;
-	    function func;
-	    Node left;
-	    Node right;
-	    Node parent;
-	    
-	    Node(){}
-	    
-	    Node(Operation op){
-	    	this.op = op;
-	    }
-	 
-	    Node(double value) {// ?
-	        this.value = value;
-	        right = null;
-	        left = null;
-	    }
-	    Node(Operation op, function func){
-	    	this.op = Operation.None;
-	    	this.func = null;
-	    	left = right = null;
-	    }
-	    Node(Polynom p){
-	    	this.func = p;
-	    }
+
+		double value;  // ?
+		Operation op;
+		function func;
+		Node left;
+		Node right;
+		Node parent;
+
+		Node(){}
+
+		Node(Operation op){
+			this.op = op;
+		}
+
+		Node(double value) {// ?
+			this.value = value;
+			right = null;
+			left = null;
+		}
+		Node(Operation op, function func){
+			this.op = Operation.None;
+			this.func = null;
+			left = right = null;
+		}
+		Node(Polynom p){
+			this.func = p;
+		}
 		public double getValue() {
 			return value;
 		}
@@ -63,12 +63,47 @@ public class ComplexFunction implements complex_function{
 			this.right = right;
 		}
 	}
-	
+
 	Node root;
-	
+
 	public ComplexFunction() {
 		root = new Node(Operation.None, null);
 	}
+
+	public ComplexFunction(Operation oper, function f, function g){
+		root = new Node(oper);
+		insertFuncRight(g);
+		insertFuncLeft(f);		
+	}
+
+	public ComplexFunction(function p) {
+		if(p instanceof Monom || p instanceof Polynom) {
+			root = new Node(Operation.None);
+			root.func = p.copy();
+		}
+		else
+			this.root=((ComplexFunction)p).root;
+	}
+	public ComplexFunction(String oper, function f, function g) {
+		Operation operation = Operation.Error;
+		if(oper=="plus")
+			operation = Operation.Plus;
+		else if(oper.equals("div"))
+			operation = Operation.Divid;
+		else if(oper.equals("mul"))
+			operation = Operation.Times;
+		else if(oper.equals("max"))
+			operation = Operation.Max;
+		else if(oper.equals("min"))
+			operation = Operation.Min;
+		
+		this.root = new Node(operation);
+		this.insertFuncLeft(f);
+		this.insertFuncRight(g);
+
+
+	}
+
 	public ComplexFunction(Node root) {
 		this.root=root;
 	}
@@ -76,9 +111,9 @@ public class ComplexFunction implements complex_function{
 		root = this.insertFunc(s);
 	}
 	public Node insertFunc(String s) {
-		
+
 		Node root = new Node();
-		
+
 		if(!s.contains(",")) {
 			Polynom p = new Polynom(s);
 			root.setFunc(p);
@@ -119,13 +154,13 @@ public class ComplexFunction implements complex_function{
 		}
 		return root;
 	}
-	
+
 	Node newRoot(Operation op) {
 		Node root = new Node(op);
 		root.left = this.root;
 		return root;
 	}
-	
+
 	void insertFuncRight(function f1) throws RuntimeException {
 		if(f1 instanceof Polynom || f1 instanceof Monom) {
 			this.root.right = new Node();
@@ -138,24 +173,37 @@ public class ComplexFunction implements complex_function{
 			throw new RuntimeException("not compatible");
 		}
 	}
-	
-	
+
+	void insertFuncLeft(function f1) throws RuntimeException {
+		if(f1 instanceof Polynom || f1 instanceof Monom) {
+			this.root.left = new Node();
+			this.root.left.func = f1;
+		}
+		else if(f1 instanceof ComplexFunction) {
+			this.root.left = ((ComplexFunction)f1).root;
+		}
+		else {
+			throw new RuntimeException("not compatible");
+		}
+	}
+
+
 	Node getLeft() {
 		return root.left;
 	}
 	Node getRight() {
 		return root.right;
 	}
-	
+
 	void setLeft(Node left) {
 		root.left=left;
 	}
 	void setRight(function f1) {
-		
+
 	}
 	@Override
 	public double f(double x) throws RuntimeException {
-		
+
 		if(!isLeaf()) {
 			Operation oper = this.getOp();
 			switch(oper) {
@@ -181,11 +229,11 @@ public class ComplexFunction implements complex_function{
 		else {
 			return this.getFunc().f(x);
 		}
-		
-		
+
+
 	}
-	
-	
+
+
 	private function getFunc() {
 		return this.root.func;
 	}
@@ -201,13 +249,13 @@ public class ComplexFunction implements complex_function{
 	public void plus(function f1) {
 		this.root = newRoot(Operation.Plus);
 		this.insertFuncRight(f1);
-		
+
 	}
 	@Override
 	public void mul(function f1) {
 		this.root = newRoot(Operation.Times);
 		this.insertFuncRight(f1);
-		
+
 	}
 	@Override
 	public void div(function f1) {
@@ -218,26 +266,26 @@ public class ComplexFunction implements complex_function{
 	public void max(function f1) {
 		this.root = newRoot(Operation.Max);
 		this.insertFuncRight(f1);
-		
+
 	}
 	@Override
 	public void min(function f1) {
 		this.root = newRoot(Operation.Min);
 		this.insertFuncRight(f1);
-		
+
 	}
 	@Override
 	public void comp(function f1) {
 		this.root = newRoot(Operation.Comp);
 		this.insertFuncRight(f1);
-		
+
 	}
 	@Override
 	public function left() throws NullPointerException{
 		Node n = root.left;
 		ComplexFunction bTb = new ComplexFunction(n);
 		return bTb;
-		
+
 	}
 	@Override
 	public function right() throws NullPointerException{
@@ -249,9 +297,9 @@ public class ComplexFunction implements complex_function{
 	public Operation getOp() {
 		return root.op;
 	}
-	
+
 	public boolean equals(Object obj) throws RuntimeException {
-		
+
 		if(!(obj instanceof function)) {
 			throw new RuntimeException("Given object is not a function.");
 		}
@@ -259,39 +307,39 @@ public class ComplexFunction implements complex_function{
 			for(int i=1;i<100;i++) 
 				if(this.f(i)!=((function)obj).f(i))
 					return false;
-			
+
 			return true;
 		}
 	}
-	
-    private static String s = "";
-    
-    private void createString(Node node) {
-    	if (node.left==null) {
-    		s+=node.func;
-    		return;
-    	}
-    	
-    	s=s+node.op+"(";
-    	
-    	createString(node.left);
-    	s+=",";
-    	
-    	createString(node.right);
-    	s+=")";
-    }
-    
-    public String toString() {
-    	s="";
-    	this.createString(this.root);
-    	return s;
-    }
+
+	private static String s = "";
+
+	private void createString(Node node) {
+		if (node.left==null) {
+			s+=node.func;
+			return;
+		}
+
+		s=s+node.op+"(";
+
+		createString(node.left);
+		s+=",";
+
+		createString(node.right);
+		s+=")";
+	}
+
+	public String toString() {
+		s="";
+		this.createString(this.root);
+		return s;
+	}
 	@Override
 	public function copy() {
-		
+
 		ComplexFunction copy = new ComplexFunction(this.toString());
 		return copy;
 	}
-	
+
 
 }
