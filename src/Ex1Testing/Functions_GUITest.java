@@ -1,6 +1,15 @@
 package Ex1Testing;
 
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.*;
 
@@ -27,7 +36,7 @@ class Functions_GUITest {
 	public static void main(String[] a) {
 		functions data = FunctionsFactory();
 		int w=1000, h=600, res=200;
-		Range rx = new Range(-10,10);
+		Range rx = new Range(-10.9,10.5);
 		Range ry = new Range(-5,15);
 		data.drawFunctions(w,h,rx,ry,res);
 		String file = "function_file.txt";
@@ -39,14 +48,14 @@ class Functions_GUITest {
 			data.saveToFile(file2);
 		}
 		catch(Exception e) {e.printStackTrace();}
-		
+
 		String JSON_param_file = "GUI_params.txt";
 		//data.drawFunctions(JSON_param_file);
 	}
 	private functions _data=null;
-//	@BeforeAll
-//	static void setUpBeforeClass() throws Exception {
-//	}
+	//	@BeforeAll
+	//	static void setUpBeforeClass() throws Exception {
+	//	}
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -55,24 +64,115 @@ class Functions_GUITest {
 
 	@Test
 	void testFunctions_GUI() {
-	//	fail("Not yet implemented");
+		//	fail("Not yet implemented");
 	}
 
 	@Test
 	void testInitFromFile() {
-	//	fail("Not yet implemented");
+		String s = "Plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.3x+5.0)";
+		String t = "Divid(420x,69x)";
+
+		ComplexFunction cF1 = new ComplexFunction(s);
+		ComplexFunction cF2 = new ComplexFunction(t);
+		
+		Functions_GUI expectedGUI = new Functions_GUI();
+		expectedGUI.add(cF1);
+		expectedGUI.add(cF2);
+		
+		String exp = "0) java.awt.Color[r=0,g=0,b=255] f(x)= Plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.3x+5.0)\n" + 
+				"1) java.awt.Color[r=0,g=255,b=255] f(x)= Divid(420.0x,69.0x)";
+
+		try {
+			FileWriter fW = new FileWriter(new File("initFromFileTest.txt"));
+			fW.append(exp);
+			fW.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		Functions_GUI actualGUI = new Functions_GUI();
+		
+		try {
+			actualGUI.initFromFile("initFromFileTest.txt");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		Iterator <function> iterAct = actualGUI.iterator();
+		Iterator <function> iterExp = expectedGUI.iterator();
+		
+		while(iterAct.hasNext()) {
+			assertEquals(iterExp.next(), iterAct.next());
+		}
+		
+		
 	}
 
 	@Test
 	void testSaveToFile() {
+
+		String s = "Plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.3x+5.0)";
+		String t = "Divid(420x,69x)";
+
+		ComplexFunction cF1 = new ComplexFunction(s);
+		ComplexFunction cF2 = new ComplexFunction(t);
+
+		Functions_GUI data = new Functions_GUI();
+		data.add(cF1);
+		data.add(cF2);
+
+		try {
+			data.saveToFile("saveToFileTest.txt");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		String exp = "0) java.awt.Color[r=0,g=0,b=255] f(x)= Plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.3x+5.0)\n" + 
+				"1) java.awt.Color[r=0,g=255,b=255] f(x)= Divid(420.0x,69.0x)";
+
+		try {
+			FileWriter fW = new FileWriter(new File("saveToFileExpected.txt"));
+			fW.append(exp);
+			fW.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		String actual="";
+		try {
+			File fActual = new File("saveToFileTest.txt");
+			Scanner scan = new Scanner(fActual);
+			while (scan.hasNextLine()) {
+				actual += scan.nextLine()+"\n";
+			}
+			//scan.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(actual);
+		String expected="";
 		
+		try {
+			File fExpected = new File("saveToFileExpected.txt");
+			Scanner scan = new Scanner(fExpected);
+			while (scan.hasNextLine()) {
+				expected += scan.nextLine()+"\n";
+			}
+			scan.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(expected);
 		
+		assertEquals(expected, actual);
+
+
 	}
 
 	@Test
 	void testDrawFunctions() {
 		//_data.drawFunctions();
-	//	fail("Not yet implemented");
+		//	fail("Not yet implemented");
 	}
 
 	@Test
@@ -92,7 +192,7 @@ class Functions_GUITest {
 		for(int i=1;i<s3.length;i++) {
 			cf3.mul(new Polynom(s3[i]));
 		}
-		
+
 		ComplexFunction cf = new ComplexFunction(Operation.Plus, p1,p2);
 		ComplexFunction cf4 = new ComplexFunction("div", new Polynom("x +1"),cf3);
 		cf4.plus(new Monom("2"));
@@ -103,8 +203,8 @@ class Functions_GUITest {
 		String s = cf.toString();
 		function cf5 = cf4.initFromString(s1);
 		function cf6 = cf4.initFromString(s2);
-		
-		
+
+
 		ans.add(cf5.copy());
 		ans.add(cf6.copy());
 		Iterator<function> iter = ans.iterator();

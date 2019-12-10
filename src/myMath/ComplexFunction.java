@@ -53,7 +53,9 @@ public class ComplexFunction implements complex_function{
 
 
 	public ComplexFunction() {
-		root = new Node(Operation.None, null);
+		root = new Node(Operation.None, new Polynom());
+		//root.setRight(null);
+		//root.setLeft(null);
 	}
 
 	public ComplexFunction(Operation oper, function f, function g){
@@ -172,24 +174,21 @@ public class ComplexFunction implements complex_function{
 
 	}
 	@Override
-	public function left() throws NullPointerException{
+	public function left(){
 		Node n = root.getLeft();
-		
 		if(n==null) {
-			throw new NullPointerException("Left of this ComplexFunction is null");
+			return null;			
 		}
-		
 		ComplexFunction bTb = new ComplexFunction(n);
 		return bTb;
 
 	}
 
 	@Override
-	public function right() throws NullPointerException{
+	public function right(){
 		Node n = root.right;
-		
 		if(n==null) {
-			throw new NullPointerException("Right of this ComplexFunction is null");
+			return null;			
 		}
 		ComplexFunction bTb = new ComplexFunction(n);
 		return bTb;
