@@ -104,7 +104,6 @@ class Functions_GUITest {
 		function cf5 = cf4.initFromString(s1);
 		function cf6 = cf4.initFromString(s2);
 		
-		ComplexFunction cf7 = new ComplexFunction("Divid(x^2,x^3)");
 		
 		ans.add(cf5.copy());
 		ans.add(cf6.copy());
@@ -119,7 +118,6 @@ class Functions_GUITest {
 		}
 		ans.add(max);
 		ans.add(min);	
-		ans.add(cf7);
 
 		return ans;
 	}
