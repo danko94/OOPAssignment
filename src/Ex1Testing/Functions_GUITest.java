@@ -1,8 +1,10 @@
-package myMath;
+package Ex1Testing;
 
 import java.util.Iterator;
 
 import org.junit.jupiter.api.*;
+
+import myMath.*;
 
 
 /**
@@ -101,6 +103,9 @@ class Functions_GUITest {
 		String s = cf.toString();
 		function cf5 = cf4.initFromString(s1);
 		function cf6 = cf4.initFromString(s2);
+		
+		ComplexFunction cf7 = new ComplexFunction("Divid(x^2,x^3)");
+		
 		ans.add(cf5.copy());
 		ans.add(cf6.copy());
 		Iterator<function> iter = ans.iterator();
@@ -113,7 +118,13 @@ class Functions_GUITest {
 			min.min(f);
 		}
 		ans.add(max);
-		ans.add(min);		
+		ans.add(min);	
+		ans.add(cf7);
+
 		return ans;
 	}
 }
+
+
+
+

@@ -10,4 +10,5 @@ module OOP {
 	requires java.desktop;
 	requires jdk.compiler;
 	requires com.google.gson;
+	requires junit;
 }

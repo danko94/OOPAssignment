@@ -211,7 +211,7 @@ public class Monom implements function{
 	
 	public boolean equals(Object obj) {
 		if(obj instanceof Monom) {
-			return this.equals(obj);
+			return this.equals((Monom)obj);
 		}
 		else {
 			throw new RuntimeException("error.");

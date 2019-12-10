@@ -143,6 +143,15 @@ public class Polynom implements Polynom_able{
 	
 		
 	}
+	
+	public boolean equals(Object obj) {
+		if(obj instanceof Polynom) {
+			return this.equals((Polynom)obj);
+		}
+		else {
+			throw new RuntimeException("error.");		
+			}
+	}
 
 	@Override
 	public boolean equals(Polynom_able p1) {  					//needs testing

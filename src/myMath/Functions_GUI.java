@@ -14,15 +14,24 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class Functions_GUI implements functions{
+	
+	public class Parameters {
+		
+		int Width, Height, Resolution;
+		double [] Range_X, Range_Y;
 
-	ArrayList<function> functions = new ArrayList();
+
+	}
 
 
-	public static Color[] Colors = {Color.blue, Color.cyan,
+	private ArrayList<function> functions = new ArrayList();
+
+	private static Color[] Colors = {Color.blue, Color.cyan,
 			Color.MAGENTA, Color.ORANGE, Color.red, Color.GREEN, Color.PINK};
 
 
@@ -130,72 +139,16 @@ public class Functions_GUI implements functions{
 	}
 
 
-	//@Override
-	public void drawFunctions1(int width, int height, Range rx, Range ry, int resolution) {
-		StdDraw.setCanvasSize(width, height);
-		double maxY = ry.get_max();
-		double minY = ry.get_min();
-		double minX = rx.get_min();
-		double maxX = rx.get_max();
+	@Override
+	public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) throws RuntimeException{
 
-
-		double[] x = new double[resolution+1];
-		double[] y = new double[resolution+1];
-
-
-
-		// rescale the coordinate system
-		StdDraw.setXscale(minX, maxX);				//window size
-		StdDraw.setYscale(minY, maxY);
-
-
-		StdDraw.setPenColor(Color.LIGHT_GRAY);
-
-		for (double i = minY; i <= maxY; i=i+1) { //vertical lines
-			StdDraw.line(minX, i, maxX, i);
-		}
-		for (double i = minX; i <= maxX; i=i+1) {		//horizontal lines
-			StdDraw.line(i, minY, i, maxY);
-		}
-
-		StdDraw.setPenColor(Color.BLACK);
-		StdDraw.setPenRadius(0.005);
-		StdDraw.line(minX, 0, maxX, 0); //x axis
-
-		StdDraw.line(0, minY, 0, maxY);  //y axis
-
-		StdDraw.setFont(new Font("TimesRoman", Font.BOLD, 15));
-		for (double i = minX; i <= maxX; i=i+1) {  //numbers on x axis
-			StdDraw.text(i,0,Double.toString(i));
-		}
-		for (double i=minY; i <= maxY; i++) {		//numbers on y axis
-			StdDraw.text(0, i, Double.toString(i));
-		}
-
-
-		for(int j = 0; j <= resolution; j++) {
-			x[j] = minX+((double)j/resolution)*(maxX-minX);
-		}
-		for(int j = 0; j < this.functions.size(); j++) {
-			StdDraw.setPenColor(Colors[j%Colors.length]);
-
-			for(int i = 0; i<=resolution; i++) {
-				y[i] = this.functions.get(j).f(x[i]);
-			}
-			//plot functions
-			for (int i = 0; i < resolution; i++) {			
-				StdDraw.line(x[i], y[i], x[i+1], y[i+1]);
-			}
-
-		}
-
-	}
-
-	public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) {
-		if(rx.isEmpty() ||ry.isEmpty()) return;
+		if(rx.isEmpty() ||ry.isEmpty()) 
+			throw new RuntimeException("Range is empty");
 
 		double minX = rx.get_min(), maxX = rx.get_max();
 		double minY = ry.get_min(), maxY = ry.get_max();
+		double stepSize = (Math.abs(minX-maxX))/resolution;
+
 		StdDraw.setCanvasSize(width,height);
 		StdDraw.setXscale(minX,maxX);
 		StdDraw.setYscale(minY,maxY);
@@ -206,33 +159,38 @@ public class Functions_GUI implements functions{
 			StdDraw.line(i, minY, i, maxY);
 		}
 		////////vertical lines
-		for(double i=minY;i<=maxY;i+=2) {
+		for(double i=minY;i<=maxY;i++) {
 			StdDraw.line(minX, i, maxX, i);
 		}
-
+		StdDraw.setPenColor(Color.BLACK);
+		StdDraw.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		for(double i=minX;i<=maxX;i++) {
-			if(i!=0)
-				StdDraw.text(i, -0.30,Integer.toString((int) i));  //double?
+			StdDraw.text(i, -0.4, Integer.toString((int) i));  //double?
 		}
-
 		for(double i=minY;i<=maxY;i++) {
 			if(i!=0)
-				StdDraw.text(-0.20,i,Integer.toString((int) i));
+				StdDraw.text(-0.2,i+0.05,Integer.toString((int) i));
 		}
 
-		StdDraw.setPenColor(Color.black);
 		StdDraw.setPenRadius(0.005);
+		
 		//y axis
 		StdDraw.line(0, minY, 0, maxY);
+		
 		//x axis
 		StdDraw.line(minX, 0, maxX, 0);
 
-		double x_steps= (Math.abs(rx.get_max())+Math.abs(ry.get_min()))/resolution;
-		for(int i=0;i<functions.size();i++) {
+
+		for(int i=0;i<functions.size();i++) {				
 			System.out.println(functions.get(i).toString());
 			StdDraw.setPenColor(Colors[i%Colors.length]);
-			for(double j=minX;j<maxX;j+=x_steps) {
-				StdDraw.line(j, functions.get(i).f(j), j+(x_steps), functions.get(i).f(j+(x_steps)));
+			
+			for(double j=minX;j<maxX;j+=stepSize) {		//Plot functions
+				try {
+					StdDraw.line(j, functions.get(i).f(j), j+(stepSize), functions.get(i).f(j+(stepSize)));
+				} catch (NumberFormatException e) {
+					//Don't do anything, when Division by 0
+				}
 			}
 
 
@@ -240,15 +198,15 @@ public class Functions_GUI implements functions{
 
 	}
 	@Override
-	public void drawFunctions(String json_file) {
+	public void drawFunctions(String json_file){
 
 		Gson gson = new Gson();
 
 
 		Parameters params = new Parameters();
+		
 		try 
 		{
-			//Option 2: from JSON file to Object
 			FileReader reader = new FileReader(json_file);
 			params = gson.fromJson(reader,Parameters.class);
 		} 
@@ -256,26 +214,15 @@ public class Functions_GUI implements functions{
 			e.printStackTrace();
 		}
 
-		Iterator<JsonElement> iter = params.Range_X.iterator();
-		Iterator<JsonElement> iter1 = params.Range_Y.iterator();
-
-
-		Range rx = new Range(iter.next().getAsDouble(), iter.next().getAsDouble());
-		Range ry = new Range(iter1.next().getAsDouble(), iter1.next().getAsDouble());
+		
+		Range rx = new Range(params.Range_X[0], params.Range_X[1]);
+		Range ry = new Range(params.Range_Y[0], params.Range_Y[1]);
 
 		drawFunctions(params.Width, params.Height, rx, ry, params.Resolution);
 
 
 	}
 
-		//System.out.println(params.Width);
 
-
-
-
-
-
-
-
-	}
+}
 
