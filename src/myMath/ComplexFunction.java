@@ -291,7 +291,6 @@ public class ComplexFunction implements complex_function{
 			str+=node.func;
 			return;
 		}
-
 		str+=node.op+"(";
 
 		createString(node.left);

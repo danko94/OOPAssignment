@@ -36,9 +36,9 @@ class Functions_GUITest {
 	public static void main(String[] a) {
 		functions data = FunctionsFactory();
 		int w=1000, h=600, res=200;
-		Range rx = new Range(-10.9,10.5);
+		Range rx = new Range(-10,10);
 		Range ry = new Range(-5,15);
-		data.drawFunctions(w,h,rx,ry,res);
+		//data.drawFunctions(w,h,rx,ry,res);
 		String file = "function_file.txt";
 		String file2 = "function_file2.txt";
 		try {
@@ -53,9 +53,10 @@ class Functions_GUITest {
 		//data.drawFunctions(JSON_param_file);
 	}
 	private functions _data=null;
-	//	@BeforeAll
-	//	static void setUpBeforeClass() throws Exception {
-	//	}
+
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+	}
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -64,7 +65,25 @@ class Functions_GUITest {
 
 	@Test
 	void testFunctions_GUI() {
-		//	fail("Not yet implemented");
+		String arr [] = {"Plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0)",
+				"Plus(Divid(1.0x+1.0,Times(Times(1.0x+3.0,1.0x-2.0),1.0x-4.0)),2.0)",
+				"Divid(Plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0),-1.0x^4+2.4x^2+3.1)", "-1.0x^4+2.4x^2+3.1",
+		 		"0.1x^5-1.2999999999999998x+5.0",
+		"Max(Max(Max(Max(Plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0),Plus(Divid(1.0x+1.0,Times(Times(1.0x+3.0,1.0x-2.0),1.0x-4.0)),2.0)),Divid(Plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0),-1.0x^4+2.4x^2+3.1)),-1.0x^4+2.4x^2+3.1),0.1x^5-1.2999999999999998x+5.0)",
+		"Min(Min(Min(Min(Plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0),Plus(Divid(1.0x+1.0,Times(Times(1.0x+3.0,1.0x-2.0),1.0x-4.0)),2.0)),Divid(Plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0),-1.0x^4+2.4x^2+3.1)),-1.0x^4+2.4x^2+3.1),0.1x^5-1.2999999999999998x+5.0)"};
+		
+		Functions_GUI fGUIActual = new Functions_GUI();
+		
+		for(int i=0;i<arr.length;i++) {
+			fGUIActual.add(new ComplexFunction(arr[i]));
+			}
+		Iterator <function> iter = fGUIActual.iterator();
+		Iterator <function> dataIter = _data.iterator();
+	
+		while(iter.hasNext()) {
+			assertEquals(dataIter.next(), iter.next());
+		}
+		
 	}
 
 	@Test
@@ -74,11 +93,11 @@ class Functions_GUITest {
 
 		ComplexFunction cF1 = new ComplexFunction(s);
 		ComplexFunction cF2 = new ComplexFunction(t);
-		
+
 		Functions_GUI expectedGUI = new Functions_GUI();
 		expectedGUI.add(cF1);
 		expectedGUI.add(cF2);
-		
+
 		String exp = "0) java.awt.Color[r=0,g=0,b=255] f(x)= Plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.3x+5.0)\n" + 
 				"1) java.awt.Color[r=0,g=255,b=255] f(x)= Divid(420.0x,69.0x)";
 
@@ -89,23 +108,23 @@ class Functions_GUITest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		Functions_GUI actualGUI = new Functions_GUI();
-		
+
 		try {
 			actualGUI.initFromFile("initFromFileTest.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		Iterator <function> iterAct = actualGUI.iterator();
 		Iterator <function> iterExp = expectedGUI.iterator();
-		
+
 		while(iterAct.hasNext()) {
 			assertEquals(iterExp.next(), iterAct.next());
 		}
-		
-		
+
+
 	}
 
 	@Test
@@ -149,9 +168,8 @@ class Functions_GUITest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(actual);
 		String expected="";
-		
+
 		try {
 			File fExpected = new File("saveToFileExpected.txt");
 			Scanner scan = new Scanner(fExpected);
@@ -162,8 +180,7 @@ class Functions_GUITest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(expected);
-		
+
 		assertEquals(expected, actual);
 
 
@@ -171,15 +188,18 @@ class Functions_GUITest {
 
 	@Test
 	void testDrawFunctions() {
-		//_data.drawFunctions();
-		//	fail("Not yet implemented");
+		int w=1000, h=600, res=200;
+		Range rx = new Range(-10,10);
+		Range ry = new Range(-5,15);
+		_data.drawFunctions(w,h,rx,ry,res);
+
 	}
 
 	@Test
 	void testDrawFunctionsIntIntRangeRangeInt() {
-		//_data.drawFunctions("GUI_params.txt");
-		//fail("Not yet implemented");
+		_data.drawFunctions("GUI_params.txt");
 	}
+
 	public static functions FunctionsFactory() {
 		functions ans = new Functions_GUI();
 		String s1 = "3.1 +2.4x^2 -x^4";
