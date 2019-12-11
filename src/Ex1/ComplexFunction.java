@@ -54,8 +54,7 @@ public class ComplexFunction implements complex_function{
 
 	public ComplexFunction() {
 		root = new Node(Operation.None, new Polynom());
-		//root.setRight(null);
-		//root.setLeft(null);
+		
 	}
 
 	public ComplexFunction(Operation oper, function f, function g){
@@ -84,6 +83,14 @@ public class ComplexFunction implements complex_function{
 			operation = Operation.Max;
 		else if(oper.equals("min"))
 			operation = Operation.Min;
+		else {
+			for (Operation c : Operation.values()) {
+				if (c.name().equals(oper)) {
+					operation = Operation.valueOf(oper);
+				}
+			}
+			
+		}
 		
 		this.root = new Node(operation);
 		this.insertFuncLeft(f);

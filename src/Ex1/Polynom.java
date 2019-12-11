@@ -131,11 +131,11 @@ public class Polynom implements Polynom_able{
 	public void multiply(Polynom_able p1) {
 		Iterator<Monom> p1_iter = ((Polynom)p1).iteretor();
 		
-		Polynom_able orig = this.copy();				//make a deep copy of original polynom
+		Polynom orig = (Polynom)this.copy();				//make a deep copy of original polynom
 		this.substract(this);							//original polynom = 0
 
 		while(p1_iter.hasNext()) {
-			Polynom_able p2 = orig.copy();	
+			Polynom p2 = (Polynom)orig.copy();	
 			p2.multiply(p1_iter.next());
 			this.add(p2);
 		}
@@ -143,17 +143,25 @@ public class Polynom implements Polynom_able{
 	
 		
 	}
-	
-	public boolean equals(Object obj) {
+	@Override
+	public boolean equals(Object obj) throws RuntimeException{
 		if(obj instanceof Polynom) {
 			return this.equals((Polynom)obj);
 		}
-		else {
-			throw new RuntimeException("error.");		
+		else if(obj instanceof ComplexFunction){
+			ComplexFunction cF = new ComplexFunction(this);
+			return ((ComplexFunction)obj).equals(cF);
 			}
+		else if(obj instanceof Monom) {
+			Polynom p = new Polynom();
+			p.add((Monom)obj);
+			return this.equals(p);			
+		}
+		else
+			throw new RuntimeException("Incompatible object");
 	}
 
-	@Override
+
 	public boolean equals(Polynom_able p1) {  					//needs testing
 		Iterator<Monom> p1_iter = ((Polynom)p1).iteretor();
 		Iterator<Monom> this_iter = this.iteretor();
@@ -266,7 +274,7 @@ public class Polynom implements Polynom_able{
 	}
 
 	@Override	 
-	public Polynom_able copy() {
+	public function copy() {
 		Iterator<Monom> iter = this.iteretor();
 		Polynom p_copy= new Polynom();
 		
@@ -277,6 +285,7 @@ public class Polynom implements Polynom_able{
 		
 		return p_copy; 
 	}
+	
 
 	@Override
 	public Polynom_able derivative() {

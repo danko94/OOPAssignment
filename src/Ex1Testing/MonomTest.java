@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import Ex1.ComplexFunction;
 import Ex1.Monom;
+import Ex1.Polynom;
 import junit.framework.Assert;
 
 class MonomTest {
@@ -56,7 +58,15 @@ class MonomTest {
 		Monom monom1 = new Monom("5x^2");
 		Monom monom2 = new Monom("5x^2");
 		Monom monom3 = new Monom("1");
+		
+		Monom m = new Monom("3x^2");
+		Polynom p1 = new Polynom("3x^2+4x+5");
+		Polynom p2 = new Polynom("4x+5");
+		ComplexFunction cF = new ComplexFunction("Plus(3x^2,Plus(4x,-4x))");
+		p1.substract(p2);
 
+		assertEquals(m, p1);
+		assertEquals(m, cF);
 		assertEquals(monom1, monom2);
 		assertNotEquals(monom2, monom3);
 	}

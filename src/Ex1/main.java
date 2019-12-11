@@ -12,14 +12,19 @@ public class main {
 		ComplexFunction cF1 = new ComplexFunction(s);
 		ComplexFunction cF2 = new ComplexFunction(t);
 		
-		Functions_GUI data = new Functions_GUI();
-		data.add(cF1);
-		data.add(cF2);
+		Monom m = new Monom("3x^2");
+		Polynom p1 = new Polynom("3x^2+4x+5");
+		Polynom p2 = new Polynom("4x+5");
+		ComplexFunction cF = new ComplexFunction("Plus(3x^2,Plus(4x,-4x))");
 		
-		try {
-			data.saveToFile("saveToFileTest.txt");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		}
+		p1.substract(p2);
+		
+		System.out.println(m.equals(p1));
+		System.out.println(m.equals(cF));
 
+		System.out.println();
+		System.out.println();
+
+
+}
 }

@@ -2,3 +2,8 @@ bin/
 *.classpath
 *.project
 .settings/
+saveToFileExpected.txt
+saveToFileTest.txt
+initFromFileTest.txt
+function_file.txt
+function_file2.txt

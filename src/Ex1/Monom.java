@@ -213,9 +213,17 @@ public class Monom implements function{
 		if(obj instanceof Monom) {
 			return this.equals((Monom)obj);
 		}
-		else {
-			throw new RuntimeException("error.");
+		else if(obj instanceof ComplexFunction){
+			ComplexFunction m = new ComplexFunction(this);
+			return ((ComplexFunction)obj).equals(m);			
 		}
+		else if(obj instanceof Polynom){
+			Polynom p = new Polynom();
+			p.add(this);
+			return p.equals(obj);
+		}
+		else
+			throw new RuntimeException("Incompatible object.");
 	}
 	/**
 	 * Check whether monom coefficients deviate less than 0.0000001 from each other

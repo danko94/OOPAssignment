@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import Ex1.ComplexFunction;
 import Ex1.Monom;
 import Ex1.Polynom;
 import Ex1.Polynom_able;
@@ -119,6 +120,14 @@ class PolynomTest {
 		Polynom newPolynom1 = new Polynom("2x^3");
 		Polynom newPolynom2 = new Polynom("5x^3");
 		assertNotEquals(newPolynom1, newPolynom2);
+		
+		Polynom p = new Polynom("3x^2");
+		Monom m = new Monom("3x^2");
+		assertEquals(p, m);
+		
+		ComplexFunction cF = new ComplexFunction("Plus(3x^2,Plus(4x,-4x))");
+		assertEquals(p, cF);
+		
 	}
 	
 	@Test
@@ -137,7 +146,7 @@ class PolynomTest {
 	@Test
 	void testCopy() {
 		Polynom newPolynom1 = new Polynom("10x^5+6x^2+9");
-		Polynom_able newPolynom2 = newPolynom1.copy();
+		Polynom newPolynom2 = (Polynom)newPolynom1.copy();
 		newPolynom1.add(new Polynom("x^11+x^2"));
 		
 		assertNotEquals(newPolynom1, newPolynom2);
