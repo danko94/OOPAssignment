@@ -10,7 +10,9 @@ In this project we used the gson library (version 2.8.6, the jar is located in t
 ## Usage
 
 1st step: choose your favourite function
+
 2nd step: enjoy
+
 3rd step: read the wiki for more information
 
 
