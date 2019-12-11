@@ -2,19 +2,15 @@
 
 Complex Function
 
-## Installation
 
-dont
 ## Usage
 
 1 put in function
 2 draw it
 
-## History
 
-2k19
 
 ## Credits
 
-Yahav Karpel
+Yahav Karpel (https://github.com/yahavk94)
 Daniel Korotine
