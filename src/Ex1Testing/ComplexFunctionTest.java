@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import myMath.ComplexFunction;
-import myMath.Operation;
-import myMath.Polynom;
-import myMath.function;
+import Ex1.ComplexFunction;
+import Ex1.Operation;
+import Ex1.Polynom;
+import Ex1.function;
 
 class ComplexFunctionTest {
 

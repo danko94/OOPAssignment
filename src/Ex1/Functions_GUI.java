@@ -1,4 +1,4 @@
-package myMath;
+package Ex1;
 
 import java.awt.Color;
 import java.awt.Font;

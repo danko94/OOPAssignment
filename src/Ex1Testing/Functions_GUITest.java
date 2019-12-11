@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 import org.junit.jupiter.api.*;
 
-import myMath.*;
+import Ex1.*;
 
 
 /**
