@@ -216,7 +216,7 @@ public class ComplexFunction implements complex_function{
 		else {
 			for(int i=-50;i<50;i++)
 				
-				if(this.f(i)!=((function)obj).f(i))
+				if(Math.abs(this.f(i)-((function)obj).f(i))>0.00001)
 					return false;
 
 			return true;

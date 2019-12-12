@@ -69,6 +69,10 @@ class MonomTest {
 		assertEquals(m, cF);
 		assertEquals(monom1, monom2);
 		assertNotEquals(monom2, monom3);
+		
+		Monom m2 = new Monom("6.7x^5");
+		ComplexFunction cFF = new ComplexFunction("mul", new ComplexFunction("6.7x "), new ComplexFunction("x^4") );
+		assertEquals(m2, cFF);
 	}
 
 	@Test
